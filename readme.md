@@ -23,6 +23,8 @@ rollup -f cjs
 
 4. rollup -c : 指定打包的配置文件
 
+5. rollup -wc / -w -c: 监听文件变化进行打包
+
 ## 配置文件
 
 > 默认使用 根目录下的 `rollup.config.js` 作为`默认的配置文件`
@@ -65,3 +67,9 @@ export default {
 # get
 
 1. commmonJs 默认可以加载 `json文件`, es module 默认不支持
+
+2. `"modules":false` : `preserve ES modules `
+> https://babeljs.io/docs/en/babel-preset-env#modules
+
+3. rollup-plugin-serve 配置 
+> https://www.npmjs.com/package/rollup-plugin-serve

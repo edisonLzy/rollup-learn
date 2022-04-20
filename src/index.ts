@@ -1,2 +1,2 @@
 export { showName } from '@/core';
-export { shared } from '@/shared' 
+export { shared } from '@/shared';

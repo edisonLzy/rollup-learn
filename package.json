@@ -19,6 +19,7 @@
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@rollup/plugin-typescript": "^8.2.1",
     "@types/lodash": "^4.14.168",
+    "del": "^6.0.0",
     "lodash": "^4.17.21",
     "minimist": "^1.2.5",
     "rollup": "^2.45.2",

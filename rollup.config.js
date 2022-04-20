@@ -1,85 +1,27 @@
-import babel from 'rollup-plugin-babel';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import typescript from '@rollup/plugin-typescript';
-import { terser } from 'rollup-plugin-terser';
-import serve from 'rollup-plugin-serve';
-import postcss from 'rollup-plugin-postcss';
-import alias from '@rollup/plugin-alias';
-import helloPlugin from './plugin/rollup-plugin-helloworld';
-
-/**
- * @type { import('rollup').RollupOptions }
- */
-
-const defaultConfig = {
-  input: 'src/index.ts',
-
+import alias from './plugin/rollup-plugin-alias';
+import image from './plugin/rollup-plugin-image';
+import replace from './plugin/rollup-plugin-replace';
+import html from './plugin/rollup-plugin-html/index';
+module.exports = {
+  input: 'src/index.js',
   output: {
-    file: 'dist/index.cjs.js',
-    format: 'esm',
-    name: 'globalName',
-    globals: {
-      lodash: '_',
-    },
+    dir: 'dists',
+    format: 'cjs',
   },
   plugins: [
-    babel({
-      exclude: 'node_modules/**',
-    }),
-    resolve(),
-    commonjs(),
-    typescript(),
     alias({
-      entries: [{}],
+      entries: [
+        // 将把 import xxx from 'module-a'
+        // 转换为 import xxx from './module-a'
+        { find: 'a', replacement: './module/a.js' },
+        { find: 'b', replacement: './module/b.js' },
+      ],
     }),
-    helloPlugin(),
+    image(),
+    replace({
+      'process.env.NODE_ENV': 'development',
+      'process.env.ENV': 'env',
+    }),
+    html(),
   ],
-  external: ['lodash'],
 };
-
-function resolveArgv() {
-  return {
-    isProd: process.env.TARGET === 'producation',
-    isServe: process.env.TARGET === 'serve',
-  };
-}
-
-function createProdConfig() {
-  const { plugins } = defaultConfig;
-  // add terser
-  const _plugins = [...plugins, terser()];
-  return {
-    ...defaultConfig,
-    plugins: _plugins,
-  };
-}
-
-function createAppConfig() {
-  const { plugins } = defaultConfig;
-  // add serve
-  const _plugins = [
-    ...plugins,
-    postcss(),
-    serve({
-      open: true,
-      port: 8080,
-      contentBase: ['dist', 'public'],
-    }),
-  ];
-  return {
-    ...defaultConfig,
-    plugins: _plugins,
-  };
-}
-
-function createConfig() {
-  // 解析 args
-  const { isProd, isServe } = resolveArgv();
-  return isProd
-    ? createProdConfig()
-    : isServe
-    ? createAppConfig()
-    : defaultConfig;
-}
-export default createConfig();

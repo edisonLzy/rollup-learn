@@ -6,10 +6,7 @@
   "author": "Evanzyli <656603136@qq.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -wc",
-    "build:prod": "rollup -c --environment TARGET:producation",
-    "serve": "rollup -wc --environment TARGET:serve"
+    "build": "rollup -c"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
@@ -29,5 +26,8 @@
     "rollup-plugin-terser": "^7.0.2",
     "tslib": "^2.2.0",
     "typescript": "^4.2.4"
+  },
+  "dependencies": {
+    "image2uri": "^2.0.1"
   }
 }
